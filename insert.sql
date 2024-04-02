@@ -1,0 +1,2 @@
+
+ALTER TABLE `users` ADD COLUMN `playtime` int(11) NOT NULL DEFAULT 0;
