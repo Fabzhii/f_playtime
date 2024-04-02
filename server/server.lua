@@ -31,6 +31,26 @@ Citizen.CreateThread(function()
 end)
 
 function reward(xPlayer, reward, notify)
-    
+    TriggerClientEvent((GetCurrentResourceName()..':notifyClient'), xPlayer.source, notify)
+    TriggerClientEvent((GetCurrentResourceName()..':triggerExports'), xPlayer.source, reward.exports.client)
+
+    for k,v in pairs(reward.items) do 
+        if exports.ox_inventory:CanCarryItem(xPlayer.source, v[1], v[2]) or Config.OverRideLimits then
+            exports.ox_inventory:AddItem(xPlayer.source, v[1], v[2])
+        end
+    end
+
+    if reward.money.cash ~= nil and reward.money.cash > 0 then 
+        exports.ox_inventory:AddItem(xPlayer.source, 'money', reward.money.cash)
+    end 
+
+    if reward.money.bank ~= nil and reward.money.bank > 0 then 
+        xPlayer.addAccountMoney('bank', reward.money.bank)
+    end 
+
+    for k,v in pairs(reward.exports.server) do 
+        exports(v)
+    end
 
 end
+
